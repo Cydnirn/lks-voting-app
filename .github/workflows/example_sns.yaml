@@ -2,10 +2,10 @@ name: Example Sent notification to email
 on:
   push:
     branches:
-      - "prod"
+      - "test"
 
 env:
-  AWS_REGION: us-east-1                 
+  AWS_REGION: us-east-1
   ENV: "prod"
 
 jobs:
@@ -13,9 +13,8 @@ jobs:
     name: Sent Notification
     runs-on: ubuntu-latest
     environment: Production
-    steps:    
-    - name: Publish Message To SNS Subscribers
-      env:
-        TOPIC_ARN: ${{ secrets.AWS_SNS_ARN }}
-      run: aws sns publish --topic-arn $TOPIC_ARN --subject "Hello, from Indonesia" --message "New Version Is Released"
-       
+    steps:
+      - name: Publish Message To SNS Subscribers
+        env:
+          TOPIC_ARN: ${{ secrets.AWS_SNS_ARN }}
+        run: aws sns publish --topic-arn $TOPIC_ARN --subject "Hello, from Indonesia" --message "New Version Is Released"

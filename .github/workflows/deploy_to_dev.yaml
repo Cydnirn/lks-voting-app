@@ -41,13 +41,14 @@ jobs:
           WORKER_IMAGE_TAG: worker-${{ env.ENV }}-latest
           VOTE_IMAGE_TAG: vote-${{ env.ENV }}-latest
           RESULT_IMAGE_TAG: result-${{ env.ENV }}-latest
+          ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}
         run: |
-          docker build -t $ECR_REGISTRY/${{ env.$ECR_REPOSITORY }}:$WORKER_IMAGE_TAG --build-arg aws_region=${{ env.AWS_REGION }} --build-arg copy_or_mount="copy" -f worker/Dockerfile ./worker
-          docker build -t $ECR_REGISTRY/${{ env.$ECR_REPOSITORY }}:$VOTE_IMAGE_TAG --build-arg aws_region=${{ env.AWS_REGION }} --build-arg copy_or_mount="copy" -f vote/Dockerfile ./vote
-          docker build -t $ECR_REGISTRY/${{ env.$ECR_REPOSITORY }}:$RESULT_IMAGE_TAG --build-arg aws_region=${{ env.AWS_REGION }} --build-arg copy_or_mount="copy" -f result/Dockerfile ./result
-          docker push $ECR_REGISTRY/${{ env.$ECR_REPOSITORY }}:$WORKER_IMAGE_TAG
-          docker push $ECR_REGISTRY/${{ env.$ECR_REPOSITORY }}:$VOTE_IMAGE_TAG
-          docker push $ECR_REGISTRY/${{ env.$ECR_REPOSITORY }}:$RESULT_IMAGE_TAG
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$WORKER_IMAGE_TAG --build-arg aws_region=${{ env.AWS_REGION }} --build-arg copy_or_mount="copy" -f worker/Dockerfile ./worker
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$VOTE_IMAGE_TAG --build-arg aws_region=${{ env.AWS_REGION }} --build-arg copy_or_mount="copy" -f vote/Dockerfile ./vote
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$RESULT_IMAGE_TAG --build-arg aws_region=${{ env.AWS_REGION }} --build-arg copy_or_mount="copy" -f result/Dockerfile ./result
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$WORKER_IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$VOTE_IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$RESULT_IMAGE_TAG
           echo "::set-output name=worker_image::$ECR_REGISTRY/${{ env.$ECR_REPOSITORY }}:$WORKER_IMAGE_TAG"
   master:
     needs: build
@@ -80,16 +81,17 @@ jobs:
           WORKER_IMAGE_TAG: worker-${{ env.ENV }}-latest
           VOTE_IMAGE_TAG: vote-${{ env.ENV }}-latest
           RESULT_IMAGE_TAG: result-${{ env.ENV }}-latest
+          ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}
         # Build docker images for vote module and push it to ECR so that it can be deployed to EKS
         run: |
-          docker pull $ECR_REGISTRY/${{ env.$ECR_REPOSITORY }}:$WORKER_IMAGE_TAG
-          docker pull $ECR_REGISTRY/${{ env.$ECR_REPOSITORY }}:$VOTE_IMAGE_TAG
-          docker pull $ECR_REGISTRY/${{ env.$ECR_REPOSITORY }}:$RESULT_IMAGE_TAG
+          docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$WORKER_IMAGE_TAG
+          docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$VOTE_IMAGE_TAG
+          docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$RESULT_IMAGE_TAG
   node1:
     needs: build
     environment: Development
-    name: Pull Image on node1
-    runs-on: master
+    name: Pull Image on master
+    runs-on: node1
     steps:
       - name: Update runner's docker Version, as worker module requires it
         run: |
@@ -116,15 +118,16 @@ jobs:
           WORKER_IMAGE_TAG: worker-${{ env.ENV }}-latest
           VOTE_IMAGE_TAG: vote-${{ env.ENV }}-latest
           RESULT_IMAGE_TAG: result-${{ env.ENV }}-latest
+          ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}
         # Build docker images for vote module and push it to ECR so that it can be deployed to EKS
         run: |
-          docker pull $ECR_REGISTRY/${{ env.$ECR_REPOSITORY }}:$WORKER_IMAGE_TAG
-          docker pull $ECR_REGISTRY/${{ env.$ECR_REPOSITORY }}:$VOTE_IMAGE_TAG
-          docker pull $ECR_REGISTRY/${{ env.$ECR_REPOSITORY }}:$RESULT_IMAGE_TAG
+          docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$WORKER_IMAGE_TAG
+          docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$VOTE_IMAGE_TAG
+          docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$RESULT_IMAGE_TAG
   node2:
     needs: build
     environment: Development
-    name: Pull Image on node2
+    name: Pull Image on master
     runs-on: node2
     steps:
       - name: Update runner's docker Version, as worker module requires it
@@ -152,11 +155,12 @@ jobs:
           WORKER_IMAGE_TAG: worker-${{ env.ENV }}-latest
           VOTE_IMAGE_TAG: vote-${{ env.ENV }}-latest
           RESULT_IMAGE_TAG: result-${{ env.ENV }}-latest
+          ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}
         # Build docker images for vote module and push it to ECR so that it can be deployed to EKS
         run: |
-          docker pull $ECR_REGISTRY/${{ env.$ECR_REPOSITORY }}:$WORKER_IMAGE_TAG
-          docker pull $ECR_REGISTRY/${{ env.$ECR_REPOSITORY }}:$VOTE_IMAGE_TAG
-          docker pull $ECR_REGISTRY/${{ env.$ECR_REPOSITORY }}:$RESULT_IMAGE_TAG
+          docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$WORKER_IMAGE_TAG
+          docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$VOTE_IMAGE_TAG
+          docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$RESULT_IMAGE_TAG
   deploy:
     needs: [master, node1, node2]
     name: Deploy Application Docker Swarm

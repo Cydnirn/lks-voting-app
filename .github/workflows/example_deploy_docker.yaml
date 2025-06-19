@@ -2,7 +2,7 @@ name: Example Deploy Application into Docker Swarm
 on:
   push:
     branches:
-      - "dev"
+      - "test"
     paths:
       - .github/workflows/example_deploy_docker.yaml
       - docker-stack.yaml
@@ -11,7 +11,7 @@ permissions:
   id-token: write
   contents: read
 jobs:
-  deploy:  
+  deploy:
     name: Example Deploy Application into docker swarm
     runs-on: master
     steps:
