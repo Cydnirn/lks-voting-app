@@ -20,7 +20,7 @@ permissions:
 
 jobs:
   build:
-    name: Build Image Development
+    name: Build Image Production
     runs-on: ubuntu-latest
     environment: Production
     steps:
@@ -55,7 +55,8 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$RESULT_IMAGE_TAG
           echo "::set-output name=worker_image::$ECR_REGISTRY/$ECR_REPOSITORY:$WORKER_IMAGE_TAG"
   deploy:
-    name: Example Deploy Application to Production
+    needs: build
+    name: Deploy Application to Production
     runs-on: ubuntu-latest
     environment: Production
     steps:
