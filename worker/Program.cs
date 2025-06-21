@@ -16,7 +16,7 @@ namespace Worker
         {
             try
             {
-                var pgsql = OpenDbConnection("Server=vote-db.cctsbkfnu57a.us-east-1.rds.amazonaws.com;Username=postgres;Password=postgres;");
+                var pgsql = OpenDbConnection("Server=vote-db.cctsbkfnu57a.us-east-1.rds.amazonaws.com;Username=postgres;Password=postgres;Database=postgres");
                 var redisConn = OpenRedisConnection("master.vote-redis.arfzqw.use1.cache.amazonaws.com:6582");
                 var redis = redisConn.GetDatabase();
 
