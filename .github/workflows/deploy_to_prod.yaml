@@ -9,7 +9,7 @@ env:
   AWS_REGION: us-east-1
   ECR_REPOSITORY: lks-voting-image
   ECS_SERVICE_WORKER: worker-service
-  ECS_CLUSTER: demo-deploy
+  ECS_CLUSTER: vote-cluster
   WORKER_TASK_DEFINITION: worker/task-definition.json
   WORKER_CONTAINER_NAME: worker-container
   ENV: "prod"
