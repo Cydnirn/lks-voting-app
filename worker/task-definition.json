@@ -105,6 +105,5 @@
   },
   "registeredAt": "2025-06-21T06:52:12.658Z",
   "registeredBy": "arn:aws:iam::284845684968:user/SenoEKS",
-  "enableFaultInjection": false,
   "tags": []
 }
