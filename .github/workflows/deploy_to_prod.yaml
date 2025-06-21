@@ -131,7 +131,7 @@ jobs:
           IMAGE_TAG: vote-${{ env.ENV }}-latest
           ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}
         run: |
-          echo "::set-output name=vote-image::$ECR_REGISTRY/$ECR_REPOSITORY:IMAGE_TAG"
+          echo "::set-output name=vote-image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
       - name: Fill in the new image ID in the Amazon ECS task definition (Worker)
         id: task-def-worker
