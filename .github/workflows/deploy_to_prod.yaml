@@ -181,8 +181,8 @@ jobs:
         id: task-def-worker
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: ${{ env.VOTE_TASK_DEFINITION }}
-          container-name: ${{ env.VOTE_CONTAINER_NAME }}
+          task-definition: ${{ env.RESULT_TASK_DEFINITION }}
+          container-name: ${{ env.RESULT_CONTAINER_NAME }}
           image: ${{ steps.set-vars.outputs.result-image }}
 
       - name: Deploy Amazon ECS task definition Worker
