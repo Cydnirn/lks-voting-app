@@ -9,9 +9,15 @@ env:
   AWS_REGION: us-east-1
   ECR_REPOSITORY: lks-voting-image
   ECS_SERVICE_WORKER: vote-worker-service-hy33i7cz
+  ECS_SERVICE_VOTE: vote-vote-service
+  ECS_SERVICE_RESULT: vote-result-service
   ECS_CLUSTER: vote-cluster
   WORKER_TASK_DEFINITION: worker/task-definition.json
+  RESULT_TASK_DEFINITION: result/task-definition.json
+  VOTE_TASK_DEFINITION: vote/task-definition.json
   WORKER_CONTAINER_NAME: worker-container
+  RESULT_CONTAINER_NAME: result-container
+  VOTE_CONTAINER_NAME: vote-container
   ENV: "prod"
 
 permissions:
