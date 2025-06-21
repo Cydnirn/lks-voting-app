@@ -1,8 +1,8 @@
 {
-  "taskDefinitionArn": "arn:aws:ecs:us-east-1:284845684968:task-definition/vote-worker:1",
+  "taskDefinitionArn": "arn:aws:ecs:us-east-1:284845684968:task-definition/vote-worker:2",
   "containerDefinitions": [
     {
-      "name": "worker",
+      "name": "worker-container",
       "image": "284845684968.dkr.ecr.us-east-1.amazonaws.com/lks-voting-image:worker-prod-latest",
       "cpu": 256,
       "memory": 512,
